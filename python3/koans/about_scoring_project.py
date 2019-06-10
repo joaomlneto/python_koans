@@ -33,8 +33,19 @@ from runner.koan import *
 # Your goal is to write the score method.
 
 def score(dice):
-    # You need to write this method
-    pass
+    score = 0
+    freqs = [0] * 6
+    # compute how many times each number shows up
+    for value in dice: freqs[value - 1] += 1
+    # set of three ones is 1000 points
+    score += 1000 * (freqs[0] // 3)
+    # set of three numbers (except ones) is worth 100 times the number
+    for i, n in enumerate(freqs[1:], start=2): score += (100 * i) * (n // 3)
+    # a one that is not part of a set of three is worth 100 points
+    score += 100 * (freqs[0] % 3)
+    # a five that is not part of a set of three is worth 50 points
+    score += 50 * (freqs[4] % 3)
+    return score
 
 class AboutScoringProject(Koan):
     def test_score_of_an_empty_list_is_zero(self):
